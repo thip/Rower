@@ -21,6 +21,7 @@ add_executable(
   rower_test.cc
   rower.cpp
   rower.h
+  rowerPresenter.h
 )
 
 target_link_libraries(

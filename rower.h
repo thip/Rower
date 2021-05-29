@@ -1,11 +1,23 @@
+#ifndef ROWER_H
+#define ROWER_H
+
+#include "rowerPresenter.h"
+
+class RowerConfig {
+    public:
+        float pulseRatio;
+        RowerPresenter* presenter;
+};
+
 class Rower {
     public:
-        Rower();
+        Rower(RowerConfig config);
         void AddPulse(int time);
-        float GetDistance();
-        int GetSplit(int index);
     
     private:
         int pulseCount;
         float pulseRatio;
+        RowerPresenter* presenter;
 };
+
+#endif
