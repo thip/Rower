@@ -12,7 +12,21 @@
 </head>
 <body>
   <h2>Rower</h2>
-  Distance: <span id="distance">%DISTANCE%</span><br/>
-  Velocity: <span id="velocity">%VELOCITY%</span>
+  Distance: <span id="distance"></span><br/>
+  500m: <span id="velocity"></span>
 </body>
+  <script>
+    setInterval(()=>{
+      fetch('http://rower.local/data')
+        .then(response => response.json())
+        .then(data => {
+          var distance = document.getElementById('distance');
+          distance.innerHTML = data.distance;
+
+          var velocity = document.getElementById('velocity');
+          var split = 500/data.velocity;
+          velocity.innerHTML = `${Math.floor(split/60)}:${Math.round(split%60)}`;
+        });
+    },500);
+  </script>
 </html>

@@ -14,7 +14,7 @@ class Rower {
         Rower(RowerConfig config);
         void AddPulse(int time);
     
-    private:
+   private:
         int pulseCount;
         float pulseRatio;
         int lastPulse;

@@ -3,12 +3,12 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include "SPIFFS.h"
-#include "rower.h"
-#include "webPresenter.h"
+#include "lib/rower.h"
+#include "lib/webPresenter.h"
 
 int pulse;
 int lastPulse;
-bool pulsed;
+volatile bool pulsed;
 
 const char* ssid = ROWER_SSID;
 const char* password = ROWER_PASSWORD;
@@ -22,28 +22,9 @@ RowerConfig config = {
 
 Rower rower = Rower(config);
 
-// Set web server port number to 80
 AsyncWebServer server(80);
 
-String processor(const String& var){
-  if(var == "DISTANCE"){
-    String distance = String(presenter.distance);
-    return distance;
-  }
-  if(var == "VELOCITY"){
-    String velocity = String(presenter.velocity);
-    return velocity;
-  }
-  return String();
-}
-
-void IRAM_ATTR isr() {
-  lastPulse = pulse;
-  int pulse = millis();
-  if (pulse-lastPulse < 25){
-      return;
-  }
-  
+void IRAM_ATTR isr() {  
   pulsed = true;
 }
 
@@ -70,8 +51,16 @@ void setup() {
     Serial.println(WiFi.localIP());
 
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        // request->send_P(200, "text/html", index_html, processor);
-        request->send(SPIFFS, "/index.html", String(), false, processor);
+        AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/index.html");
+        request->send(response);
+    });
+
+    server.on("/data", HTTP_GET, [](AsyncWebServerRequest *request){
+        String JSON = "{";
+        JSON += "\"distance\":" + String(presenter.distance) + ",";
+        JSON += "\"velocity\":" + String(presenter.velocity);
+        JSON += "}";
+        request->send(200, "application/json", JSON);
     });
 
     server.begin();
@@ -83,7 +72,13 @@ void setup() {
 void loop() {
     if (pulsed){
         detachInterrupt(21);
-        rower.AddPulse(pulse);
+        lastPulse = pulse;
+        pulse = millis();
+        
+        if (pulse-lastPulse > 25){
+            rower.AddPulse(pulse);
+        }
+        
         pulsed = false;
         attachInterrupt(21, isr, RISING);
     }

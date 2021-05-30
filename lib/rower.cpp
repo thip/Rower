@@ -1,4 +1,4 @@
-#include "rower.h"
+#include "../lib/rower.h"
 
 Rower::Rower(RowerConfig config) {
     this->pulseRatio = config.pulseRatio;

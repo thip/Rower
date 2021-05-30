@@ -16,13 +16,17 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
+include_directories(
+    lib
+)
+
+
 add_executable(
   rower_test
-  rower_test.cc
-  rower.cpp
-  rower.h
-  rowerPresenter.h
+  lib/rower.cpp
+  test/rower_test.cc
 )
+
 
 target_link_libraries(
   rower_test
