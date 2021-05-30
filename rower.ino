@@ -2,6 +2,7 @@
 #include <ESPmDNS.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
+#include "SPIFFS.h"
 #include "rower.h"
 #include "webPresenter.h"
 
@@ -24,30 +25,14 @@ Rower rower = Rower(config);
 // Set web server port number to 80
 AsyncWebServer server(80);
 
-const char index_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE HTML><html>
-<head>
-  <title>ESP Web Server</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="data:,">
-  <style>
-    html {font-family: Arial; display: inline-block; text-align: center;}
-    h2 {font-size: 3.0rem;}
-    p {font-size: 3.0rem;}
-    body {max-width: 600px; margin:0px auto; padding-bottom: 25px;}
-  </style>
-</head>
-<body>
-  <h2>ESP Web Server</h2>
-  %DISTANCEPLACEHOLDER%
-</body>
-</html>
-)rawliteral";
-
 String processor(const String& var){
-  if(var == "DISTANCEPLACEHOLDER"){
-    String distance = "Distance: " + String(presenter.distance);
+  if(var == "DISTANCE"){
+    String distance = String(presenter.distance);
     return distance;
+  }
+  if(var == "VELOCITY"){
+    String velocity = String(presenter.velocity);
+    return velocity;
   }
   return String();
 }
@@ -66,6 +51,11 @@ void setup() {
     Serial.begin(115200);
     pinMode(21, INPUT_PULLUP);
 
+    if(!SPIFFS.begin(true)){
+        Serial.println("An Error has occurred while mounting SPIFFS");
+        return;
+    }
+
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
@@ -80,7 +70,8 @@ void setup() {
     Serial.println(WiFi.localIP());
 
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send_P(200, "text/html", index_html, processor);
+        // request->send_P(200, "text/html", index_html, processor);
+        request->send(SPIFFS, "/index.html", String(), false, processor);
     });
 
     server.begin();

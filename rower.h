@@ -17,6 +17,8 @@ class Rower {
     private:
         int pulseCount;
         float pulseRatio;
+        int lastPulse;
+        float lastDistance;
         RowerPresenter* presenter;
 };
 

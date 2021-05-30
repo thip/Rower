@@ -7,13 +7,16 @@ class MockPresenter : public RowerPresenter {
       this->distance = distance;
     }
 
+    void Velocity(float velocity){
+      this->velocity = velocity;
+    }
+
     float distance;
+    float velocity;
 };
 
-
-
 TEST(Rower, 1_ticks_is_1m) {
-  MockPresenter* presenter = new MockPresenter;
+  MockPresenter* presenter = new MockPresenter();
 
   RowerConfig config = {
     .pulseRatio = 1.0f,
@@ -28,7 +31,7 @@ TEST(Rower, 1_ticks_is_1m) {
 }
 
 TEST(Rower, 0_ticks_is_0m) {
-  MockPresenter* presenter = new MockPresenter;
+  MockPresenter* presenter = new MockPresenter();
 
   RowerConfig config = {
     .pulseRatio = 4.805f,
@@ -41,7 +44,7 @@ TEST(Rower, 0_ticks_is_0m) {
 }
 
 TEST(Rower, 100_ticks_is_20_81m) {
-  MockPresenter* presenter = new MockPresenter;
+  MockPresenter* presenter = new MockPresenter();
 
   RowerConfig config = {
     .pulseRatio = 4.805f,
@@ -58,7 +61,7 @@ TEST(Rower, 100_ticks_is_20_81m) {
 }
 
 TEST(Rower, 150_ticks_is_31_22m) {
-  MockPresenter* presenter = new MockPresenter;
+  MockPresenter* presenter = new MockPresenter();
 
   RowerConfig config = {
     .pulseRatio = 4.805f,
@@ -72,4 +75,45 @@ TEST(Rower, 150_ticks_is_31_22m) {
   }
   
   EXPECT_NEAR(presenter->distance, 31.22f, 0.005);
+}
+
+
+TEST(Rower, velocity_1ms) {
+  MockPresenter* presenter = new MockPresenter();
+
+  RowerConfig config = {
+    .pulseRatio = 1.0f,
+    .presenter = presenter
+  };
+
+  Rower* rower = new Rower(config);
+
+  rower->AddPulse(0);
+  rower->AddPulse(1000);
+  rower->AddPulse(2000);
+  rower->AddPulse(3000);
+  rower->AddPulse(4000);
+  rower->AddPulse(5000);
+
+  EXPECT_NEAR(presenter->velocity, 1.0f, 0.005);
+}
+
+TEST(Rower, velocity_2ms) {
+  MockPresenter* presenter = new MockPresenter();
+
+  RowerConfig config = {
+    .pulseRatio = 1.0f,
+    .presenter = presenter
+  };
+
+  Rower* rower = new Rower(config);
+
+  rower->AddPulse(0);
+  rower->AddPulse(500);
+  rower->AddPulse(1000);
+  rower->AddPulse(1500);
+  rower->AddPulse(2000);
+  rower->AddPulse(2500);
+
+  EXPECT_NEAR(presenter->velocity, 2.0f, 0.005);
 }
