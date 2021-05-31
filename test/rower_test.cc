@@ -20,6 +20,13 @@ class MockPresenter : public RowerPresenter {
     float acceleration;
 };
 
+void addPulses(Rower* rower, std::initializer_list<int> pulses){
+  for( auto pulse : pulses )
+    {
+        rower->AddPulse(pulse);
+    }
+}
+
 TEST(Rower, 1_ticks_is_1m) {
   MockPresenter* presenter = new MockPresenter();
 
@@ -93,12 +100,7 @@ TEST(Rower, velocity_1ms) {
 
   Rower* rower = new Rower(config);
 
-  rower->AddPulse(0);
-  rower->AddPulse(1000);
-  rower->AddPulse(2000);
-  rower->AddPulse(3000);
-  rower->AddPulse(4000);
-  rower->AddPulse(5000);
+  addPulses(rower, {0,1000,2000,3000,4000,5000});
 
   EXPECT_NEAR(presenter->velocity, 1.0f, 0.005);
 }
@@ -113,12 +115,7 @@ TEST(Rower, velocity_2ms) {
 
   Rower* rower = new Rower(config);
 
-  rower->AddPulse(0);
-  rower->AddPulse(500);
-  rower->AddPulse(1000);
-  rower->AddPulse(1500);
-  rower->AddPulse(2000);
-  rower->AddPulse(2500);
+  addPulses(rower, {0,500,1000,1500,2000,2500});
 
   EXPECT_NEAR(presenter->velocity, 2.0f, 0.005);
 }
@@ -133,14 +130,9 @@ TEST(Rower, accel_0mss) {
 
   Rower* rower = new Rower(config);
 
-  rower->AddPulse(0);
-  rower->AddPulse(1000);
-  rower->AddPulse(2000);
-  rower->AddPulse(3000);
-  rower->AddPulse(4000);
-  rower->AddPulse(5000);
+  addPulses(rower, {0,1000,2000,3000,4000,5000});
 
-  EXPECT_NEAR(presenter->acceleration, 0.0f, 0.1);
+  EXPECT_NEAR(presenter->acceleration, 0.0f, 0.05);
 }
 
 TEST(Rower, accel_1mss) {
@@ -153,18 +145,10 @@ TEST(Rower, accel_1mss) {
 
   Rower* rower = new Rower(config);
 
-  rower->AddPulse(0);
-  rower->AddPulse(1414);
-  rower->AddPulse(2000);
-  rower->AddPulse(2449);
-  rower->AddPulse(2828);
-  rower->AddPulse(3162);
-  rower->AddPulse(3464);
-  rower->AddPulse(3742);
-  rower->AddPulse(4000);
-  rower->AddPulse(4243);
+  addPulses(rower, {0 ,1414, 2000, 2449, 2828, 3162, 3464, 3742, 4000, 4243});
 
-  EXPECT_NEAR(presenter->acceleration, 1.0f, 0.1);
+
+  EXPECT_NEAR(presenter->acceleration, 1.0f, 0.05);
 }
 
 TEST(Rower, accel_0_1mss) {
@@ -177,17 +161,7 @@ TEST(Rower, accel_0_1mss) {
 
   Rower* rower = new Rower(config);
 
-  rower->AddPulse(0);
-  rower->AddPulse(4472);
-  rower->AddPulse(6325);
-  rower->AddPulse(7746);
-  rower->AddPulse(8944);
-  rower->AddPulse(10000);
-  rower->AddPulse(10954);
-  rower->AddPulse(11832);
-  rower->AddPulse(12649);
-  rower->AddPulse(13416);
-  rower->AddPulse(14142);
+addPulses(rower, {0, 4472, 6325, 7746, 8944, 10000, 10954, 11832, 12649, 13416, 14142});
 
-  EXPECT_NEAR(presenter->acceleration, 0.1f, 0.01);
+  EXPECT_NEAR(presenter->acceleration, 0.1f, 0.005);
 }
