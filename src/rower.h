@@ -13,12 +13,14 @@ class Rower {
         Rower(RowerConfig config);
         void AddPulse(int time);
     
-   private:
-        int pulseCount;
+    private:
+        
+        int lastPulse = 0;
+        int pulseCount = 0;
+        float lastDistance = 0;
+        float lastVelocity = 0;
+
         float pulseRatio;
-        int lastPulse;
-        float lastDistance;
-        float lastVelocity;
         RowerPresenter* presenter;
 };
 
