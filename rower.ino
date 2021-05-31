@@ -6,50 +6,48 @@
 #include "lib/rower.h"
 #include "lib/webPresenter.h"
 
+
+#define SENSOR_PIN 21
+#define DEBOUNCE_THRESHOLD 25
+#define SERIAL_BAUD 115200
+#define ROWER_PULSE_RATIO 4.805f
+
 int pulse;
 int lastPulse;
 volatile bool pulsed;
 
-const char* ssid = ROWER_SSID;
-const char* password = ROWER_PASSWORD;
-
+AsyncWebServer server(80);
 WebPresenter presenter;
-
 RowerConfig config = {
-    .pulseRatio = 4.805f,
+    .pulseRatio = ROWER_PULSE_RATIO,
     .presenter = &presenter
 };
-
 Rower rower = Rower(config);
 
-AsyncWebServer server(80);
-
-void IRAM_ATTR isr() {  
-  pulsed = true;
-}
-
-void setup() {
-    Serial.begin(115200);
-    pinMode(21, INPUT_PULLUP);
-
+void startSpiffs(){
     if(!SPIFFS.begin(true)){
         Serial.println("An Error has occurred while mounting SPIFFS");
         return;
     }
+}
 
-    WiFi.begin(ssid, password);
+void startWifi(){
+    WiFi.begin(ROWER_SSID, ROWER_PASSWORD);
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.println("Connecting to WiFi...");
     }
+    Serial.println(WiFi.localIP());
+}
 
+void startMDNS(){
     if(!MDNS.begin("rower")) {
         Serial.println("Error starting mDNS");
         return;
     }
+}
 
-    Serial.println(WiFi.localIP());
-
+void startServer(){
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
         AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/index.html");
         request->send(response);
@@ -64,22 +62,38 @@ void setup() {
     });
 
     server.begin();
+}
+
+void IRAM_ATTR isr() {  
+  pulsed = true;
+}
+
+void setup() {
+    Serial.begin(115200);
+    pinMode(SENSOR_PIN, INPUT_PULLUP);
+
+    startSpiffs();
+    startWifi();
+    startMDNS();
+    startServer();
 
     pulse = millis();
-    attachInterrupt(21, isr, RISING);
+    attachInterrupt(SENSOR_PIN, isr, RISING);
 }
 
 void loop() {
     if (pulsed){
-        detachInterrupt(21);
+        detachInterrupt(SENSOR_PIN);
         lastPulse = pulse;
         pulse = millis();
         
-        if (pulse-lastPulse > 25){
+        if (pulse-lastPulse > DEBOUNCE_THRESHOLD){
             rower.AddPulse(pulse);
         }
         
         pulsed = false;
-        attachInterrupt(21, isr, RISING);
+        attachInterrupt(SENSOR_PIN, isr, RISING);
     }
 }
+
+
