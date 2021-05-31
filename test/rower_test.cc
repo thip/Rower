@@ -159,7 +159,10 @@ TEST(Rower, accel_1mss) {
   rower->AddPulse(2449);
   rower->AddPulse(2828);
   rower->AddPulse(3162);
-
+  rower->AddPulse(3464);
+  rower->AddPulse(3742);
+  rower->AddPulse(4000);
+  rower->AddPulse(4243);
 
   EXPECT_NEAR(presenter->acceleration, 1.0f, 0.1);
 }
@@ -180,6 +183,11 @@ TEST(Rower, accel_0_1mss) {
   rower->AddPulse(7746);
   rower->AddPulse(8944);
   rower->AddPulse(10000);
+  rower->AddPulse(10954);
+  rower->AddPulse(11832);
+  rower->AddPulse(12649);
+  rower->AddPulse(13416);
+  rower->AddPulse(14142);
 
   EXPECT_NEAR(presenter->acceleration, 0.1f, 0.01);
 }
