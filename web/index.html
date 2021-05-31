@@ -1,6 +1,7 @@
 <!DOCTYPE HTML><html>
 <head>
   <title>Rower</title>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
   <style>
@@ -13,7 +14,8 @@
 <body>
   <h2>Rower</h2>
   Distance: <span id="distance"></span><br/>
-  500m: <span id="velocity"></span>
+  500m: <span id="velocity"></span><br/>
+  Acceleration: <span id="acceleration"></span>
 </body>
   <script>
     setInterval(()=>{
@@ -26,6 +28,9 @@
           var velocity = document.getElementById('velocity');
           var split = 500/data.velocity;
           velocity.innerHTML = `${Math.floor(split/60)}:${Math.round(split%60)}`;
+
+          var acceleration = document.getElementById('acceleration');
+          acceleration.innerHTML = data.acceleration;
         });
     },500);
   </script>

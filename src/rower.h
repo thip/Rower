@@ -3,10 +3,9 @@
 
 #include "rowerPresenter.h"
 
-class RowerConfig {
-    public:
-        float pulseRatio;
-        RowerPresenter* presenter;
+struct RowerConfig {
+    float pulseRatio;
+    RowerPresenter* presenter;
 };
 
 class Rower {
@@ -19,6 +18,7 @@ class Rower {
         float pulseRatio;
         int lastPulse;
         float lastDistance;
+        float lastVelocity;
         RowerPresenter* presenter;
 };
 

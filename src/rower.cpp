@@ -16,7 +16,13 @@ void Rower::AddPulse(int time) {
     this->lastDistance = distance;
 
     float velocity = deltaS/deltaT;
+    
+    float deltaV = velocity-this->lastVelocity;
+    this->lastVelocity = velocity;
+
+    float acceleration = deltaV/deltaT;
 
     this->presenter->Distance(distance);
     this->presenter->Velocity(velocity);
+    this->presenter->Acceleration(acceleration);
 }

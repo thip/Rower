@@ -1,20 +1,21 @@
 #ifndef JSONPRESENTER_H
 #define JSONPRESENTER_H
 
-#include <functional>
+#include "stringPresenter.h"
 #include "rowerPresenter.h"
 
-typedef std::function<void(char *json)> jsonCallback;
 
-class JsonPresenter : public RowerPresenter {
+class JsonPresenter : public RowerPresenter, public StringPresenter {
     public:
         void Distance(float distance) override;
         void Velocity(float velocity) override;
-        void Present(jsonCallback callback);
+        void Acceleration(float acceleration) override;
+        void Present(stringCallback callback) override;
 
     private:
         float distance;
         float velocity;
+        float acceleration;
 };
 
 #endif
