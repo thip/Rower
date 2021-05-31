@@ -19,7 +19,7 @@ test:
 	cmake --build build && build/rower_test
 
 screen:
-	screen ${ROWER_PORT}
+	screen ${ROWER_PORT} 115200
 
 
 .PHONY: build upload test screen

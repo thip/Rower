@@ -3,8 +3,8 @@
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include "SPIFFS.h"
-#include "lib/rower.h"
-#include "lib/webPresenter.h"
+#include "src/rower.h"
+#include "src/jsonPresenter.h"
 
 
 #define SENSOR_PIN 21
@@ -17,7 +17,7 @@ int lastPulse;
 volatile bool pulsed;
 
 AsyncWebServer server(80);
-WebPresenter presenter;
+JsonPresenter presenter;
 RowerConfig config = {
     .pulseRatio = ROWER_PULSE_RATIO,
     .presenter = &presenter
@@ -54,11 +54,9 @@ void startServer(){
     });
 
     server.on("/data", HTTP_GET, [](AsyncWebServerRequest *request){
-        String JSON = "{";
-        JSON += "\"distance\":" + String(presenter.distance) + ",";
-        JSON += "\"velocity\":" + String(presenter.velocity);
-        JSON += "}";
-        request->send(200, "application/json", JSON);
+        presenter.Present([request](char* json){
+            request->send(200, "application/json", json);
+        });
     });
 
     server.begin();

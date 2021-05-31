@@ -1,4 +1,4 @@
-#include "../lib/rower.h"
+#include "rower.h"
 
 Rower::Rower(RowerConfig config) {
     this->pulseRatio = config.pulseRatio;
@@ -15,11 +15,8 @@ void Rower::AddPulse(int time) {
     float deltaS = distance - this->lastDistance;
     this->lastDistance = distance;
 
-
     float velocity = deltaS/deltaT;
 
     this->presenter->Distance(distance);
     this->presenter->Velocity(velocity);
-
-    
 }

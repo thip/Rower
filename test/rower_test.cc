@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../lib/rower.h"
+#include "../src/rower.h"
 
 class MockPresenter : public RowerPresenter {
   public:

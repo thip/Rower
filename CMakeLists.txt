@@ -17,13 +17,15 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 include_directories(
-    lib
+    src
 )
 
 
 add_executable(
   rower_test
-  lib/rower.cpp
+  src/rower.cpp
+  src/jsonPresenter.cpp
+  test/jsonPresenter_test.cc
   test/rower_test.cc
 )
 
