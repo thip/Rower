@@ -2,7 +2,6 @@
 #include "jsonPresenter.h"
 
 
-
 void JsonPresenter::Distance(float distance) {
     this->distance=distance;
 }

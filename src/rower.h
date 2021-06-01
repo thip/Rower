@@ -6,13 +6,13 @@
 
 struct RowerConfig {
     float pulseRatio;
-    RowerPresenter* presenter;
 };
 
 class Rower {
     public:
         Rower(RowerConfig config);
         void AddPulse(int time);
+        void Update(RowerPresenter* presenter);
     
     private:
         Aggregator<int, 2> time;
@@ -21,7 +21,6 @@ class Rower {
         Aggregator<float, 6> acceleration;
 
         float pulseRatio;
-        RowerPresenter* presenter;
 };
 
 

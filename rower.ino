@@ -19,8 +19,7 @@ volatile bool pulsed;
 AsyncWebServer server(80);
 JsonPresenter presenter;
 RowerConfig config = {
-    .pulseRatio = ROWER_PULSE_RATIO,
-    .presenter = &presenter
+    .pulseRatio = ROWER_PULSE_RATIO
 };
 Rower rower = Rower(config);
 
@@ -54,6 +53,7 @@ void startServer(){
     });
 
     server.on("/data", HTTP_GET, [](AsyncWebServerRequest *request){
+        rower.Update(&presenter);
         presenter.Present([request](char* json){
             request->send(200, "application/json", json);
         });
