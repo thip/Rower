@@ -15,11 +15,15 @@ upload_spiffs:
 upload: build
 	arduino-cli upload --fqbn ${ROWER_BOARD_NAME} --port ${ROWER_PORT} ./rower
 
-test:
-	cmake --build build && build/rower_test
+test: build_tests
+	 build/rower_test
 
 screen:
 	screen ${ROWER_PORT} 115200
+
+
+build_tests:
+	cmake -B build && cmake --build build
 
 
 .PHONY: build upload test screen
