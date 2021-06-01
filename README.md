@@ -23,7 +23,7 @@ Custom ESP32 based monitor for the WaterRower A1 🚣
 1. Populate `.env` with your specific config (use `.env.example` as a guide)
 1. Run `make`
 1. Connect your ESP32 to your WaterRower A1 sensor - the positive lead goes to pin 21, the other goes to gnd (use a multimeter to work out which is which) 
-1. Power up the ESP32 and the A1 monitor (We're just using it to power up the sensor for now)
+1. Power up the ESP32 and switch on the A1 monitor (We're just using it to provide power to the sensor for now)
 1. Browse to http://rower.local/
 1. Start Rowing!
 
