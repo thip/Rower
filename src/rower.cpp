@@ -5,36 +5,15 @@ Rower::Rower(RowerConfig config) {
     this->presenter = config.presenter;
 }
 
-void Rower::AddPulse(int time) {
+void Rower::AddPulse(int pulseTime) {
     this->pulseCount++;
 
-    float deltaT = (time - this->lastPulse)/1000.0f;
-    float distance = this->pulseCount/this->pulseRatio;
-    this->lastPulse = time;
+    time.add(pulseTime);
+    distance.add(this->pulseCount/this->pulseRatio);
+    velocity.add(distance.delta()/time.delta());
+    acceleration.add(velocity.delta()/time.delta());
 
-    float deltaS = distance - this->lastDistance;
-    this->lastDistance = distance;
-
-    velocities[velocitiesHead] = deltaS/deltaT;    
-    float deltaV = this->velocities[velocitiesHead]-this->velocities[(velocitiesHead+4)%5];
-    velocitiesHead = (velocitiesHead+1)%5;
-
-    accelerations[accelerationsHead] = deltaV/deltaT;
-    accelerationsHead = (accelerationsHead+1)%3;
-
-    float velocity = 0;
-    for (int i = 0; i < 5; i++){
-        velocity += velocities[i];
-    }
-    velocity = velocity/5;
-
-    float acceleration = 0;
-    for (int i = 0; i < 3; i++){
-        acceleration += accelerations[i];
-    }
-    acceleration = acceleration/3;
-
-    this->presenter->Distance(distance);
-    this->presenter->Velocity(velocity);
-    this->presenter->Acceleration(acceleration);
+    this->presenter->Distance(distance.current());
+    this->presenter->Velocity(velocity.average()*1000.0f);
+    this->presenter->Acceleration(acceleration.average()*1000000.0f);
 }

@@ -2,6 +2,7 @@
 #define ROWER_H
 
 #include "rowerPresenter.h"
+#include "aggregator.h"
 
 struct RowerConfig {
     float pulseRatio;
@@ -14,19 +15,17 @@ class Rower {
         void AddPulse(int time);
     
     private:
-        
-        int lastPulse = 0;
         int pulseCount = 0;
-        float lastDistance = 0;
 
-        int velocitiesHead = 0;
-        float velocities[5] = {};
-
-        int accelerationsHead = 0;
-        float accelerations[3] = {};
+        Aggregator<int, 2> time;
+        Aggregator<float, 2> distance;
+        Aggregator<float, 5> velocity;
+        Aggregator<float, 3> acceleration;
 
         float pulseRatio;
         RowerPresenter* presenter;
 };
+
+
 
 #endif
