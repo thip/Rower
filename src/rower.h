@@ -23,6 +23,4 @@ class Rower {
         float pulseRatio;
 };
 
-
-
 #endif

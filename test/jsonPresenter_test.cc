@@ -91,3 +91,23 @@ TEST(JsonPresenter, acceleration_2_45) {
     EXPECT_THAT(json, HasSubstr("\"acceleration\":2.45"));
   });
 }
+
+TEST(JsonPresenter, acceleration_nan) {
+  JsonPresenter* jsonPresenter = new JsonPresenter();
+
+  jsonPresenter->Acceleration(nan(""));
+  
+  jsonPresenter->Present([](char* json){
+    EXPECT_THAT(json, HasSubstr("\"acceleration\":0.00"));
+  });
+}
+
+TEST(JsonPresenter, velocity_nan) {
+  JsonPresenter* jsonPresenter = new JsonPresenter();
+
+  jsonPresenter->Velocity(nan(""));
+  
+  jsonPresenter->Present([](char* json){
+    EXPECT_THAT(json, HasSubstr("\"velocity\":0.00"));
+  });
+}

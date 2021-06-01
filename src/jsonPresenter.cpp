@@ -1,4 +1,5 @@
 #include  <stdio.h>
+#include <math.h> 
 #include "jsonPresenter.h"
 
 
@@ -11,7 +12,7 @@ void JsonPresenter::Velocity(float velocity) {
 }
 
 void JsonPresenter::Acceleration(float accceleration) {
-    this->acceleration  = accceleration;
+    this->acceleration =  accceleration;
 }
 
 void JsonPresenter::Present(stringCallback callback) {
@@ -19,7 +20,7 @@ void JsonPresenter::Present(stringCallback callback) {
     
     snprintf(buffer, sizeof buffer, 
         "{\"distance\":%.0f,\"velocity\":%.2f,\"acceleration\":%.2f}", 
-        this->distance, this->velocity, this->acceleration);
+        this->distance, isnan(this->velocity) ? 0 : this->velocity, isnan(this->acceleration) ? 0 : this->acceleration);
 
     callback(buffer);
 }
