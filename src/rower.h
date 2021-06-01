@@ -15,12 +15,10 @@ class Rower {
         void AddPulse(int time);
     
     private:
-        int pulseCount = 0;
-
         Aggregator<int, 2> time;
         Aggregator<float, 2> distance;
-        Aggregator<float, 5> velocity;
-        Aggregator<float, 3> acceleration;
+        Aggregator<float, 256> velocity;
+        Aggregator<float, 6> acceleration;
 
         float pulseRatio;
         RowerPresenter* presenter;

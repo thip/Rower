@@ -4,27 +4,55 @@
 template<class T, int N>
 class Aggregator {
     public:
+        void add (int timeStamp, T elem){
+            add(elem);
+            timeStamps[head] = timeStamp;
+        };
         void add (T elem){
-            head = (head+1)%N;
+            head = move(head, 1);
             elems[head] = elem;
+            sampleCount++;
         };
         T delta(){
-            return elems[head]-elems[(head+N-1)%N];
+            return elems[head]-elems[move(head, -1)];
         };
-        T average(){
+        T average(int period){
+            int cutoff = timeStamps[head] - period;
             T sum = 0;
-            for (auto elem : elems){
-                sum += elem;
+            int iterations = 0;
+            for (int index = head; iterations < N && iterations < sampleCount; index = move(index, -1), iterations++){
+                if (period > 0 && timeStamps[index] < cutoff){
+                    break;
+                }
+            
+                sum += elems[index];    
             }
-            return sum/N;
+
+            return sum/iterations;
         };
+
+        T average(){
+            return average(0);
+        };
+
         T current(){
             return elems[head];
+        };
+
+        int count(){
+            return sampleCount;
         }
 
     protected:
         int head = 0;
-        T elems[N] = {}; 
+        int sampleCount = 0;
+        T elems[N] = {};
+        int timeStamps[N] = {};
+
+    private:
+        int move(int value, int amount){
+            return (value + amount + N) % N;
+        }
 };
 
 #endif
