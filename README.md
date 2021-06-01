@@ -1,6 +1,8 @@
 # Rower
 Custom ESP32 based monitor for the WaterRower A1 🚣
 
+[![Tests](https://github.com/thip/Rower/actions/workflows/Tests.yml/badge.svg)](https://github.com/thip/Rower/actions/workflows/Tests.yml)
+
 ## Features
 - [x] Web based interface displaying:
   - [x] Distance
