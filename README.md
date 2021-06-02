@@ -12,7 +12,7 @@ Custom ESP32 based monitor for the WaterRower A1 🚣
 ## Hardware
 - [WaterRower A1 rowing machine](https://www.waterrower.co.uk/waterrower-a1-studio-rowing-machine)
 - [Adafruit HUZZAH32 – ESP32 Feather Board](https://www.adafruit.com/product/3405)
-- 2 pin female JST-SM connector and wires to connect to WaterRower sensor
+- 2 pin JST-SM connectors and wires to connect to WaterRower sensor
 
 ## Prerequisites
 - [arduino-cli](https://github.com/arduino/arduino-cli) with esp32 core installed
