@@ -7,7 +7,7 @@ Custom ESP32 based monitor for the WaterRower A1 🚣
 - [x] Web based interface displaying:
   - [x] Distance
   - [x] 500m pace
-  - [x] Stroke Acceleration
+  - [x] Acceleration (this is just a stepping stone towards stroke detection)
 - [ ] More soon!
 ## Hardware
 - [WaterRower A1 rowing machine](https://www.waterrower.co.uk/waterrower-a1-studio-rowing-machine)
