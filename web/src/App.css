@@ -1,0 +1,22 @@
+button {
+  background-color: rgb(0, 0, 138);
+  color: lightgrey;
+  border: solid 5px lightgrey;
+  margin: 10px;
+  font-size: 50px;
+  width: 200px;
+  height: 100%;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+button:hover {
+  background-color: rgb(0, 0, 97);
+}
+
+html {
+  background-color: black;
+  color: lightgrey;
+  font-size: 50px;
+}
