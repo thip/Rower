@@ -52,12 +52,16 @@ void startServer(){
         request->send(response);
     });
 
+    server.serveStatic("/static", SPIFFS, "/static");
+
     server.on("/data", HTTP_GET, [](AsyncWebServerRequest *request){
         rower.Update(&presenter);
         presenter.Present([request](char* json){
             request->send(200, "application/json", json);
         });
     });
+
+    
 
     server.begin();
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import TimeEntry from '../components/Entry';
+import Entry from '../components/Entry';
 
 function Setup(props) {
   const [time, setTime] = useState(0);
@@ -8,19 +8,19 @@ function Setup(props) {
   const updateTime = (value) => setTime(value > 0 ? value : 0);
   const updateDistance = (value) => setDistance(value > 0 ? value : 0);
 
-  const onStart = () => props.onStart({distance, time});
+  const onStart = () => props.onStart({distance, time: time*60*1000});
 
   return (
-      <div style={{display: "flex", alignSelf: "center", height: "800px"}}>
+      <div style={{display: "flex", alignSelf: "center", height: "500px"}}>
         <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
-          <TimeEntry values={[20,5,1]} value={time} onChange={updateTime} format={value => `${value} minutes`}/>
-          <TimeEntry values={[1000,200,50]} value={distance} onChange={updateDistance} format={value => `${value.toLocaleString()}m`}/>
-          <div style={{ textAlign: "center", margin: "25px", fontSize: "100px"}}>
-            {pace(distance, time)}
+          <Entry values={[1000,200,50]} value={distance} onChange={updateDistance} format={value => `${value.toLocaleString()}m`}/>
+          <Entry values={[20,5,1]} value={time} onChange={updateTime} format={value => `${value} minutes`}/>
+          <div style={{ textAlign: "center", margin: "15px", fontSize: "70px"}}>
+            {pace(distance, time)}/500m
           </div>
         </div>
-        <div style={{margin: "20px"}}>
-          <button style={{width: "300px"}} onClick={onStart}>Start</button>
+        <div style={{margin: "15px"}}>
+          <button style={{width: "200px"}} onClick={onStart}>Start</button>
         </div>
       </div>
   );
@@ -39,7 +39,7 @@ function pace(distance, time){
   const minutes = Math.floor(pace / 60);
   const seconds = Math.round(pace - minutes * 60);
 
-  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}/500m`
+  return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`
 }
 
 export default Setup;
