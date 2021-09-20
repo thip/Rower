@@ -3,8 +3,8 @@ button {
   color: lightgrey;
   border: solid 5px lightgrey;
   margin: 10px;
-  font-size: 50px;
-  width: 200px;
+  font-size: 32px;
+  width: 150px;
   height: 100%;
   display: inline-block;
   cursor: pointer;
@@ -18,5 +18,5 @@ button:hover {
 html {
   background-color: black;
   color: lightgrey;
-  font-size: 50px;
+  font-size: 32px;
 }
